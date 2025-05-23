@@ -7,12 +7,13 @@ import React from "react";
 import { CloudRain, Moon, RotateCcw, Sun } from "lucide-react";
 import { isToday, isSameDay } from "date-fns";
 import { useWeatherStore } from "@/lib/store/weather-store";
-import Location from "@/components/location";
+import Location from "@/app/_components/location";
 import { useQuery } from "@tanstack/react-query";
 import { weatherProviders } from "@/lib/weather-service/providers";
 import { getWEatherIcon as getWeatherIcon } from "@/lib/weather-service/weather-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import WeatherCharts from "@/components/weather-charts";
+import WeatherCharts from "@/app/_components/weather-charts";
+import CurrentWeather from "../_components/current-weather";
 
 export default function Home() {
   const {
@@ -52,51 +53,24 @@ export default function Home() {
   if (provider !== "open-meteo") return <p>API Key required</p>;
 
   if (isLoading) return <p>Loading...</p>;
-  const CurrentWeatherIcon = getWeatherIcon(
-    data?.current?.weatherCode!,
-    data?.current.isDay!
-  );
 
   return (
     <div>
-      <div className="sticky z-50 top-0 bg-background">
-        <div
-          className="" //"text-primary-foreground bg-primary mask-alpha mask-b-from-primary mask-b-from-50% mask-b-to-transparent h-20"
-        >
-          <Location timezone={data?.timezone} />
-        </div>
+      <div className="sticky z-50 top-0 bg-background pt-4 pb-2">
+        <Location timezone={data?.timezone} />
       </div>
 
       {data?.current && (
-        <div className="px-4">
-          <div className="p-2 border rounded-xl bg-primary text-primary-foreground flex items-center justify-between">
-            <div className="">
-              <div className="flex text-xs items-center gap-1">
-                <span className="">Weather Now</span>
-                {data.current?.isDay ? (
-                  <>
-                    <Sun className="size-3" />
-                    <span>Day</span>
-                  </>
-                ) : (
-                  <>
-                    <Moon />
-                    <span>Night</span>
-                  </>
-                )}
-              </div>
-              <span className="text-4xl font-bold">
-                {toFixedTemp(data.current?.temp)}
-              </span>
-            </div>
-            <span className="text-5xl">
-              <CurrentWeatherIcon />
-            </span>
-          </div>
-        </div>
+        <CurrentWeather
+          weather={{
+            current: data.current,
+            sunrise: data.daily[0]?.sunrise!,
+            sunset: data.daily[0]?.sunset!,
+          }}
+        />
       )}
 
-      <div className="sticky z-50 top-20  py-2 bg-background space-y-2 px-4">
+      <div className="sticky z-50 top-18  py-2 bg-background space-y-2 mt-4  ">
         <div className="flex items-center px-4 ">
           {selectedDate && (
             <h3 className="text-lg ">
@@ -141,7 +115,7 @@ export default function Home() {
                 <div
                   key={date}
                   className={cn(
-                    "bg-card text-card-foreground p-2 rounded-xl border w-32",
+                    "bg-card text-card-foreground p-2 rounded-xl border w-32 cursor-pointer",
                     selectedDate === date && "border-emerald-600  border-2"
                   )}
                   onClick={() => setSelectedDate(date)}
@@ -170,19 +144,25 @@ export default function Home() {
         </div>
       </div>
       {selectedLocation?.id ? (
-        <Tabs defaultValue="hourly" className="w-full px-4">
-          <TabsList className="w-full">
-            <TabsTrigger className="" value="hourly">
+        <Tabs defaultValue="hourly" className="w-full mt-4">
+          <TabsList className="w-full p-0 bg-transparent">
+            <TabsTrigger
+              className="rounded-full shadow-none data-[state=active]:shadow-none data-[state=active]:border-border"
+              value="hourly"
+            >
               Hourly
             </TabsTrigger>
-            <TabsTrigger value="chart">Chart</TabsTrigger>
+            <TabsTrigger
+              value="chart"
+              className="rounded-full shadow-none data-[state=active]:shadow-none data-[state=active]:border-border"
+            >
+              Chart
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="hourly">
             {data ? (
               <div className="space-y-2">
-                <div className=" w-full py-4 bg-background">
-                  <h3 className="text-2xl font-bold flex ">Hourly</h3>
-                </div>
+                <div className=" w-full  bg-background"></div>
                 {selectedHourlyForecast?.map((h) => {
                   const Icon = getWeatherIcon(h.weatherCode, h.isDay);
 
@@ -199,7 +179,7 @@ export default function Home() {
                       <Icon className="text-5xl ml-4" />
 
                       <div className="ml-auto flex items-center">
-                        {h.rainProbability > 0 && (
+                        {h.rainProbability > 5 && (
                           <div className="mr-4 flex text-primary items-center gap-1">
                             <CloudRain className="size-4" />
                             <p>{h.rainProbability}%</p>

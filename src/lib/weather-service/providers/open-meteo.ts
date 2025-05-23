@@ -12,8 +12,9 @@ export const openMeteoProvider: WeatherProvider = {
     );
     url.searchParams.append(
       "daily",
-      "temperature_2m_max,temperature_2m_min,weathercode"
+      "temperature_2m_max,temperature_2m_min,weathercode,sunrise,sunset"
     );
+
     url.searchParams.append("timezone", "auto");
     url.searchParams.append("language", lang);
     url.searchParams.append("current", "temperature_2m,is_day,weather_code");
@@ -21,7 +22,7 @@ export const openMeteoProvider: WeatherProvider = {
     const res = await fetch(url);
     const data = await res.json();
 
-    const weather = {
+    return {
       timezone: data.timezone,
       hourly: data.hourly.time.map((time: string, i: number) => ({
         time,
@@ -35,13 +36,14 @@ export const openMeteoProvider: WeatherProvider = {
         minTemp: data.daily.temperature_2m_min[i],
         maxTemp: data.daily.temperature_2m_max[i],
         weatherCode: data.daily.weathercode[i],
+        sunrise: data.daily.sunrise[i],
+        sunset: data.daily.sunset[i],
       })),
       current: {
         temp: data?.current?.temperature_2m,
         isDay: Boolean(data?.current?.is_day),
         weatherCode: data?.current?.weather_code,
       },
-    };
-    return weather as WeatherData;
+    } as WeatherData;
   },
 };

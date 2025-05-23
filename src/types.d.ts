@@ -11,6 +11,8 @@ type DailyForecast = {
   minTemp: number;
   maxTemp: number;
   weatherCode: number;
+  sunset: string;
+  sunrise: string;
 };
 
 type WeatherData = {

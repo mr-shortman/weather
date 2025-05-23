@@ -13,7 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Button } from "./ui/button";
+import { Button } from "../../components/ui/button";
 import { useLocalTime } from "@/lib/hook/use-local-time";
 import {
   Clock,
@@ -25,7 +25,7 @@ import {
   Repeat,
   Settings,
 } from "lucide-react";
-import { Icons } from "./icons";
+import { Icons } from "../../components/icons";
 import Link from "next/link";
 
 function Location({ timezone }: { timezone: string | undefined }) {
@@ -56,7 +56,7 @@ function Location({ timezone }: { timezone: string | undefined }) {
   const localTime = useLocalTime(timezone);
 
   return (
-    <div className="w-full flex justify-between items-center p-4 gap-2 ">
+    <div className="w-full flex justify-between items-center  gap-2 ">
       <div className="flex flex-col">
         {selectedLocation?.id ? (
           <>
@@ -73,11 +73,11 @@ function Location({ timezone }: { timezone: string | undefined }) {
                   : null}
               </span>
               <span className="ml-1">{selectedLocation?.country}</span>
-              <p className="flex items-center">
-                <Icons.clock />
-                <span className="ml-1">{localTime}</span>
-              </p>
             </div>
+            {/* <p className="flex items-center">
+              <Icons.clock />
+              <span className="ml-1">{localTime}</span>
+            </p> */}
           </>
         ) : (
           <div>
@@ -85,16 +85,21 @@ function Location({ timezone }: { timezone: string | undefined }) {
           </div>
         )}
       </div>
-
-      <Button asChild variant={"outline"} className="ml-auto">
-        <Link href={"/settings"}>
-          <Settings className="size-4" />
-        </Link>
-      </Button>
-      <Button onClick={() => setOpen(true)}>
-        <MapPin className="size-4" />
-        <span>Location</span>
-      </Button>
+      <div className=" flex items-center justify-end">
+        <Button
+          asChild
+          variant={"ghost"}
+          className="ml-auto text-muted-foreground"
+        >
+          <Link href={"/settings"}>
+            <Settings className="size-4" />
+          </Link>
+        </Button>
+        <Button onClick={() => setOpen(true)}>
+          <MapPin className="size-4 ml-auto" />
+          <span>Location</span>
+        </Button>
+      </div>
 
       <CommandDialog shouldFilter={false} open={open} onOpenChange={setOpen}>
         <CommandInput
