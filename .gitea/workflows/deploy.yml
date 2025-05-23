@@ -16,7 +16,7 @@ jobs:
           username: ${{secrets.USER}}
           password: ${{secrets.TOKEN}}
       - name: build and push docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v5 
         with:
           context: .
           file: ./Dockerfile
