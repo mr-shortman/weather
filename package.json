@@ -44,6 +44,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.5.1",
+    "react-swipeable": "^7.0.2",
     "recharts": "^2.15.3",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",

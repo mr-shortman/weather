@@ -11,6 +11,7 @@ import {
   PolarAngleAxis,
   PolarGrid,
   Radar,
+  YAxis,
 } from "recharts";
 import {
   Card,
@@ -28,6 +29,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { toFixedTemp } from "@/lib/weather-service/utils";
 
 export function TempRainChart({
   data,
@@ -46,25 +48,65 @@ export function TempRainChart({
       <CardContent>
         <ChartContainer
           config={{
-            temp: { label: "Temperature" },
-            rain: { label: "Rain" },
+            temp: { label: "Temp °C" },
+            rain: { label: "Rain %" },
           }}
-          className="mx-auto aspect-square max-h-[250px] "
+          className="mx-auto aspect-square "
         >
           <RadarChart
             data={data}
             margin={{
               top: -40,
-              bottom: -40,
+              bottom: -20,
             }}
           >
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value) =>
+                    `Time: ${Number(value).toString()}`
+                  }
+                  indicator="line"
+                />
+              }
+              formatter={(value, name, item, index, payload) => {
+                if (name === "temp")
+                  return (
+                    <div className="flex w-full justify-between items-center relative pl-2">
+                      <div
+                        style={{
+                          backgroundColor: item.color,
+                        }}
+                        className="w-1 h-3 absolute left-0 rounded-full"
+                      />
+                      <span>Temp</span>
+                      <span>{toFixedTemp(Number(value))}</span>
+                    </div>
+                  );
+                else if (name === "rain")
+                  return (
+                    <div className="flex w-full justify-between items-center relative pl-2">
+                      <div
+                        style={{
+                          backgroundColor: item.color,
+                        }}
+                        className="w-1 h-3 absolute left-0 rounded-full"
+                      />
+                      <span>Rain</span>
+                      <span>{`${value}%`}</span>
+                    </div>
+                  );
+                return "unknown";
+              }}
             />
-            <PolarAngleAxis dataKey="time" />
+            <PolarAngleAxis
+              dataKey="time"
+              tickFormatter={(value) => Number(value).toString()}
+            />
             <PolarGrid />
             <Radar
+              label={"test"}
               dataKey="temp"
               fill="var(--color-destructive)"
               fillOpacity={0.6}
@@ -74,14 +116,7 @@ export function TempRainChart({
               fill="var(--color-blue-500)"
               fillOpacity={0.6}
             />
-            {/* <XAxis
-              dataKey={"time"}
-              tickFormatter={(value) => {
-                return new Date(value).toLocaleDateString("en-US", {
-                  weekday: "short",
-                });
-              }}
-            /> */}
+
             <ChartLegend content={<ChartLegendContent />} />
           </RadarChart>
         </ChartContainer>
@@ -90,12 +125,14 @@ export function TempRainChart({
   );
 }
 
-type TempChartData = Array<{
-  label: string;
-  value: number;
-}>;
-
-const TemperatureChart = ({ data }: { data: TempChartData }) => {
+const TemperatureChart = ({
+  data,
+}: {
+  data: Array<{
+    label: string;
+    value: number;
+  }>;
+}) => {
   return (
     <Card className="border-0 shadow-none">
       <CardHeader>
@@ -104,9 +141,9 @@ const TemperatureChart = ({ data }: { data: TempChartData }) => {
       <CardContent>
         <ChartContainer
           config={{
-            label: { color: "var(--color-primary)", label: "Temperature" },
+            value: { color: "var(--color-primary)", label: "Temp" },
           }}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square"
         >
           <LineChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
@@ -117,9 +154,28 @@ const TemperatureChart = ({ data }: { data: TempChartData }) => {
               tickMargin={8}
               tickFormatter={(value) => value.replace(0, 3)}
             />
+            <YAxis
+              dataKey="value"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              width={36}
+              tickFormatter={(value) => toFixedTemp(value)}
+              // tickFormatter={(value) => value.replace(0, 3)}
+            />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(val) => (
+                    <div className="flex justify-between items-center w-full">
+                      <span>Temp</span>
+                      <span>{toFixedTemp(Number(val))}</span>
+                    </div>
+                  )}
+                />
+              }
             />
             <Line
               dataKey="value"
@@ -151,16 +207,15 @@ export default function WeatherCharts({
             hour12: false,
           })
             .format(new Date(time))
-            .replace("/[A-Za-z]/g", ""),
+            .replace(/[A-Za-z]/g, ""),
           temp: temperature,
           rain: rainProbability,
         }))}
       />
       <TemperatureChart
-        data={hourly.map(({ temperature, time }) => ({
+        data={selectedHourly.map(({ temperature, time }) => ({
           label: Intl.DateTimeFormat(undefined, {
             hour: "numeric",
-            hour12: false,
           })
             .format(new Date(time))
             .replace("/[A-Za-z]/g", ""),

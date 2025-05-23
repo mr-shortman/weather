@@ -58,24 +58,32 @@ function Location({ timezone }: { timezone: string | undefined }) {
   return (
     <div className="w-full flex justify-between items-center p-4 gap-2 ">
       <div className="flex flex-col">
-        <div className="flex items-center gap-1">
-          <span className="text-2xl font-semibold">
-            {selectedLocation?.name}
-          </span>
-        </div>
+        {selectedLocation?.id ? (
+          <>
+            <div className="flex items-center gap-1">
+              <span className="text-2xl font-semibold">
+                {selectedLocation?.name}
+              </span>
+            </div>
 
-        <div className="text-sm flex items-center gap-1">
-          <span>
-            {selectedLocation?.countryCode
-              ? getUnicodeFlagIcon(selectedLocation.countryCode)
-              : null}
-          </span>
-          <span className="ml-1">{selectedLocation?.country}</span>
-          <p className="flex items-center">
-            <Icons.clock />
-            <span className="ml-1">{localTime}</span>
-          </p>
-        </div>
+            <div className="text-sm flex items-center gap-1">
+              <span>
+                {selectedLocation?.countryCode
+                  ? getUnicodeFlagIcon(selectedLocation.countryCode)
+                  : null}
+              </span>
+              <span className="ml-1">{selectedLocation?.country}</span>
+              <p className="flex items-center">
+                <Icons.clock />
+                <span className="ml-1">{localTime}</span>
+              </p>
+            </div>
+          </>
+        ) : (
+          <div>
+            <p className="text-muted-foreground">No location</p>
+          </div>
+        )}
       </div>
 
       <Button asChild variant={"outline"} className="ml-auto">
@@ -95,18 +103,18 @@ function Location({ timezone }: { timezone: string | undefined }) {
         />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup>
-            {locations?.length
-              ? locations.map((loc) => (
-                  <CommandItem key={loc.id} onSelect={() => handleSelect(loc)}>
-                    {getUnicodeFlagIcon(loc.countryCode)}
-                    <span>{loc.name}</span>
-                    <span>{loc.countryCode}</span>
-                  </CommandItem>
-                ))
-              : null}
-          </CommandGroup>
-          <CommandGroup title="Previous Locations">
+          {locations?.length ? (
+            <CommandGroup heading="Locations">
+              {locations.map((loc) => (
+                <CommandItem key={loc.id} onSelect={() => handleSelect(loc)}>
+                  {getUnicodeFlagIcon(loc.countryCode)}
+                  <span>{loc.name}</span>
+                  <span>{loc.countryCode}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ) : null}
+          <CommandGroup heading="Previous Locations">
             {prevLocations?.length
               ? prevLocations.map((loc) => (
                   <CommandItem key={loc.id} onSelect={() => handleSelect(loc)}>

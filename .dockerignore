@@ -1,0 +1,17 @@
+node_modules/
+packages/
+.git/
+.gitignore
+README.md
+*.md
+.env
+.env.local
+.env.*.local
+coverage/
+.nyc_output/
+.cache/
+dist/
+build/
+*.log
+.DS_Store
+Thumbs.db

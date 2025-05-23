@@ -14,16 +14,26 @@ export const weatherRouter = createTRPCRouter({
       );
       const geoData = await geoRes.json();
       if (!geoData.results?.length) return [];
-      console.log(geoData);
 
-      return geoData.results.map((result: any) => ({
-        id: result.id,
-        name: result.name,
-        country: result.country,
-        countryCode: result.country_code,
-        lat: result.latitude,
-        lon: result.longitude,
-      })) as Array<WeatherLocation>;
+      const seen = new Set<string>();
+
+      const uniqueLocations = geoData.results
+        .filter((result: any) => {
+          const key = `${result.name}-${result.country}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        })
+        .map((result: any) => ({
+          id: result.id,
+          name: result.name,
+          country: result.country,
+          countryCode: result.country_code,
+          lat: result.latitude,
+          lon: result.longitude,
+        })) as Array<WeatherLocation>;
+
+      return uniqueLocations;
     }),
 
   getTomorrowIoForecast: publicProcedure
