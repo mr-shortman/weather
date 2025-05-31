@@ -10,10 +10,12 @@ import { useWeatherStore } from "@/lib/store/weather-store";
 import Location from "@/app/_components/location";
 import { useQuery } from "@tanstack/react-query";
 import { weatherProviders } from "@/lib/weather-service/providers";
-import { getWEatherIcon as getWeatherIcon } from "@/lib/weather-service/weather-icons";
+import { getWeatherIcon as getWeatherIcon } from "@/lib/weather-service/weather-icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import WeatherCharts from "@/app/_components/weather-charts";
 import CurrentWeather from "../_components/current-weather";
+import { useTranslations } from "next-intl";
+import HourlyForecast from "../_components/hourly-forecast";
 
 export default function Home() {
   const {
@@ -42,21 +44,14 @@ export default function Home() {
     }
   }, [data, selectedDate]);
 
-  const selectedHourlyForecast = React.useMemo(() => {
-    if (!data?.hourly || !selectedDate) return [];
-
-    return data.hourly.filter((h) =>
-      isSameDay(new Date(h.time), new Date(selectedDate))
-    );
-  }, [data, selectedDate]);
+  const t = useTranslations("Home");
 
   if (provider !== "open-meteo") return <p>API Key required</p>;
-
   if (isLoading) return <p>Loading...</p>;
-
   return (
     <div>
-      <div className="sticky z-50 top-0 bg-background pt-4 pb-2">
+      <div className="fixed top-0 h-4 w-full bg-background z-50" />
+      <div className="sticky z-50 top-4 bg-background pb-2">
         <Location timezone={data?.timezone} />
       </div>
 
@@ -71,9 +66,9 @@ export default function Home() {
       )}
 
       <div className="sticky z-50 top-18  py-2 bg-background space-y-2 mt-4  ">
-        <div className="flex items-center px-4 ">
+        <div className="flex items-center px-2 ">
           {selectedDate && (
-            <h3 className="text-lg ">
+            <h3 className="text-sm ">
               {Intl.DateTimeFormat(undefined, {
                 day: "numeric",
                 month: "numeric",
@@ -88,12 +83,12 @@ export default function Home() {
             <Button
               onClick={() => refetch()}
               className="ml-auto py-1 h-max"
-              size={"sm"}
               disabled={isRefetching}
+              size={"xs"}
               variant={"outline"}
             >
               {isRefetching ? (
-                "Loading..."
+                t("loading")
               ) : (
                 <>
                   <span>
@@ -102,7 +97,7 @@ export default function Home() {
                       minute: "numeric",
                     }).format(new Date(dataUpdatedAt))}
                   </span>
-                  <RotateCcw className="size-4" />
+                  <RotateCcw className="size-3" />
                 </>
               )}
             </Button>
@@ -115,8 +110,8 @@ export default function Home() {
                 <div
                   key={date}
                   className={cn(
-                    "bg-card text-card-foreground p-2 rounded-xl border w-32 cursor-pointer",
-                    selectedDate === date && "border-emerald-600  border-2"
+                    "p-2 rounded-xl border-2 w-32 cursor-pointer ",
+                    selectedDate === date && "border-primary/25"
                   )}
                   onClick={() => setSelectedDate(date)}
                 >
@@ -124,7 +119,7 @@ export default function Home() {
                     <div>
                       <p className="font-semibold text-lg">
                         {isToday(date)
-                          ? "Today"
+                          ? t("today")
                           : Intl.DateTimeFormat("en-US", {
                               weekday: "short",
                             }).format(new Date(date))}
@@ -150,59 +145,22 @@ export default function Home() {
               className="rounded-full shadow-none data-[state=active]:shadow-none data-[state=active]:border-border"
               value="hourly"
             >
-              Hourly
+              {t("hourly")}
             </TabsTrigger>
             <TabsTrigger
-              value="chart"
+              value="details"
               className="rounded-full shadow-none data-[state=active]:shadow-none data-[state=active]:border-border"
             >
-              Chart
+              {t("details")}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="hourly">
-            {data ? (
-              <div className="space-y-2">
-                <div className=" w-full  bg-background"></div>
-                {selectedHourlyForecast?.map((h) => {
-                  const Icon = getWeatherIcon(h.weatherCode, h.isDay);
-
-                  return (
-                    <div
-                      key={h.time}
-                      className="bg-card text-card-foreground p-4 flex  items-center  rounded-xl border grow w-full"
-                    >
-                      <p className="text-xl">
-                        {new Date(h.time).toLocaleString(undefined, {
-                          hour: "numeric",
-                        })}
-                      </p>
-                      <Icon className="text-5xl ml-4" />
-
-                      <div className="ml-auto flex items-center">
-                        {h.rainProbability > 5 && (
-                          <div className="mr-4 flex text-primary items-center gap-1">
-                            <CloudRain className="size-4" />
-                            <p>{h.rainProbability}%</p>
-                          </div>
-                        )}
-
-                        <p className="text-2xl font-bold ">
-                          {toFixedTemp(h.temperature)}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <p>No Data</p>
-            )}
+            {data?.hourly?.length ? (
+              <HourlyForecast data={data?.hourly!} />
+            ) : null}
           </TabsContent>
-          <TabsContent value="chart">
-            <WeatherCharts
-              selectedHourly={selectedHourlyForecast}
-              hourly={data?.hourly!}
-            />
+          <TabsContent value="details">
+            <WeatherCharts hourly={data?.hourly!} />
           </TabsContent>
         </Tabs>
       ) : (

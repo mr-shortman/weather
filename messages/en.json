@@ -1,0 +1,30 @@
+{
+  "Home": {
+    "location": "Location",
+    "today": "Today",
+    "hourly": "Hourly",
+    "details": "Details",
+    "day": "Day",
+    "night": "Night",
+    "weatherNow": "Weather Now",
+
+    "tomorrow": "Tomorrow",
+
+    "noLocation": "No location",
+    "noData": "No Data",
+    "noResultFound": "No results found.",
+    "loading": "Loading...",
+    "expandMore": "Expand more",
+    "expandLess": "Expand less"
+  },
+  "Chart": {
+    "temp": "Temperature",
+    "rain": "Rain"
+  },
+  "Settings": {
+    "title": "Settings",
+    "goBack": "Go Back",
+    "language": "Language",
+    "theme": "Theme"
+  }
+}

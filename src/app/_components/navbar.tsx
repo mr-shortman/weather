@@ -7,9 +7,7 @@ import { api } from "@/trpc/server";
 import { Button } from "../../components/ui/button";
 import SelectWeatherProvider from "./select-weather-provider";
 import { SettingsIcon } from "lucide-react";
-async function foo() {
-  return "bar";
-}
+
 export default async function Navbar() {
   const session = await auth();
 

@@ -22,9 +22,21 @@ import {
 } from "weather-icons-react";
 
 import { type ComponentType } from "react";
+import { cn } from "../utils";
+import { Settings } from "lucide-react";
+import { weatherIcons } from "@/components/icons";
 
-// Return type is a React component (not JSX)
-export function getWEatherIcon(
+const withCn = <P extends object>(
+  Component: React.ComponentType<P>,
+  defaultClassName?: string
+) => {
+  return (props: P & { className?: string }) => {
+    return (
+      <Component {...props} className={cn(defaultClassName, props.className)} />
+    );
+  };
+};
+export function getWeatherIcon(
   code: number,
   isDaytime: boolean
 ): ComponentType<any> {
@@ -32,10 +44,12 @@ export function getWEatherIcon(
 
   switch (code) {
     case 0:
-      return day ? WiDaySunny : WiNightClear;
+      return day
+        ? withCn(weatherIcons.clearDay, "text-yellow-400")
+        : WiNightClear;
     case 1:
     case 2:
-      return day ? WiDayCloudy : WiNightAltCloudy;
+      return day ? weatherIcons.dayCloudy : WiNightAltCloudy;
     case 3:
       return WiCloudy;
     case 45:

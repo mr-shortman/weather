@@ -30,6 +30,9 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { toFixedTemp } from "@/lib/weather-service/utils";
+import { useTranslations } from "next-intl";
+import { useWeatherStore } from "@/lib/store/weather-store";
+import { isSameDay } from "date-fns";
 
 export function TempRainChart({
   data,
@@ -40,10 +43,12 @@ export function TempRainChart({
     temp: number;
   }>;
 }) {
+  const t = useTranslations("Chart");
+
   return (
     <Card className="border-0 shadow-none">
       <CardHeader className="items-center pb-4">
-        <CardTitle>Temperature / Rain</CardTitle>
+        <CardTitle>{`${t("temp")} / ${t("rain")}`}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -133,10 +138,11 @@ const TemperatureChart = ({
     value: number;
   }>;
 }) => {
+  const t = useTranslations("Chart");
   return (
     <Card className="border-0 shadow-none">
       <CardHeader>
-        <CardTitle>Temperature</CardTitle>
+        <CardTitle>{t("temp")}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -169,10 +175,14 @@ const TemperatureChart = ({
                 <ChartTooltipContent
                   hideLabel
                   formatter={(val) => (
-                    <div className="flex justify-between items-center w-full">
-                      <span>Temp</span>
-                      <span>{toFixedTemp(Number(val))}</span>
-                    </div>
+                    <>
+                      <div className="flex justify-between items-center w-full">
+                        <span>Temp</span>
+                        <span>{toFixedTemp(Number(val))}</span>
+
+                        <span>{toFixedTemp(Number(val))}</span>
+                      </div>
+                    </>
                   )}
                 />
               }
@@ -192,12 +202,18 @@ const TemperatureChart = ({
 };
 
 export default function WeatherCharts({
-  selectedHourly,
   hourly,
 }: {
   hourly: Array<HourlyForecast>;
-  selectedHourly: Array<HourlyForecast>;
 }) {
+  const selectedDate = useWeatherStore((state) => state.selectedDate);
+  const selectedHourly = React.useMemo(() => {
+    if (!hourly || !selectedDate) return [];
+
+    return hourly.filter((h) =>
+      isSameDay(new Date(h.time), new Date(selectedDate))
+    );
+  }, [hourly, selectedDate]);
   return (
     <div>
       <TempRainChart
@@ -214,11 +230,10 @@ export default function WeatherCharts({
       />
       <TemperatureChart
         data={selectedHourly.map(({ temperature, time }) => ({
-          label: Intl.DateTimeFormat(undefined, {
+          label: new Date(time).toLocaleString("en-US", {
             hour: "numeric",
-          })
-            .format(new Date(time))
-            .replace("/[A-Za-z]/g", ""),
+            hour12: false,
+          }),
           value: temperature,
         }))}
       />

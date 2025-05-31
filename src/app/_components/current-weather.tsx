@@ -1,6 +1,7 @@
 import { toFixedTemp } from "@/lib/weather-service/utils";
-import { getWEatherIcon as getWeatherIcon } from "@/lib/weather-service/weather-icons";
+import { getWeatherIcon as getWeatherIcon } from "@/lib/weather-service/weather-icons";
 import { Sparkle, Sun } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 function CurrentWeather({
@@ -26,56 +27,31 @@ function CurrentWeather({
     progress = 0;
   }
   const CurrentWeatherIcon = getWeatherIcon(weatherCode, isDay);
+  const t = useTranslations("Home");
+
   return (
     <div className="mt-4 py-4 px-6 border rounded-3xl bg-primary text-primary-foreground">
       <div className=" flex items-center justify-between">
         <div className="">
           <div className="flex text-xs items-center gap-1">
-            <span className="">Weather Now</span>
+            <span className="">{t("weatherNow")}</span>
             {isDay ? (
               <>
                 <Sun className="size-3" />
-                <span>Day</span>
+                <span>{t("day")}</span>
               </>
             ) : (
               <>
                 <Sparkle className="size-3" />
-                <span>Night</span>
+                <span>{t("night")}</span>
               </>
             )}
           </div>
           <span className="text-4xl font-black">{toFixedTemp(temp)}</span>
         </div>
-        <span className="text-5xl">
-          <CurrentWeatherIcon />
-        </span>
+
+        <CurrentWeatherIcon className="size-10" />
       </div>
-      {/* <div>
-        <div className="h-2 w-full bg-primary-foreground/25 rounded-full overflow-hidden ">
-          <div
-            style={{
-              width: `${progress}%`,
-              height: "100%",
-              backgroundColor: "currentColor",
-              transition: "width 1s ease-in-out",
-            }}
-          />
-        </div>
-        <div className="flex items-center justify-between text-xs text-primary-foreground/75 pt-1">
-          <span>
-            {new Date(sunrise).toLocaleTimeString(undefined, {
-              hour: "numeric",
-              minute: "numeric",
-            })}
-          </span>
-          <span>
-            {new Date(sunset).toLocaleTimeString(undefined, {
-              hour: "numeric",
-              minute: "numeric",
-            })}
-          </span>
-        </div>
-      </div> */}
     </div>
   );
 }

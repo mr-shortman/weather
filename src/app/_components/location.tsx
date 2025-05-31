@@ -15,18 +15,10 @@ import {
 } from "@/components/ui/command";
 import { Button } from "../../components/ui/button";
 import { useLocalTime } from "@/lib/hook/use-local-time";
-import {
-  Clock,
-  Clock12Icon,
-  Clock4,
-  Globe,
-  Globe2,
-  MapPin,
-  Repeat,
-  Settings,
-} from "lucide-react";
+import { MapPin, Settings } from "lucide-react";
 import { Icons } from "../../components/icons";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 function Location({ timezone }: { timezone: string | undefined }) {
   const prevLocations = useWeatherStore((state) => state.locations);
@@ -53,8 +45,8 @@ function Location({ timezone }: { timezone: string | undefined }) {
     setOpen(false);
     setValue("");
   };
-  const localTime = useLocalTime(timezone);
-
+  // const localTime = useLocalTime(timezone);
+  const t = useTranslations("Home");
   return (
     <div className="w-full flex justify-between items-center  gap-2 ">
       <div className="flex flex-col">
@@ -81,7 +73,7 @@ function Location({ timezone }: { timezone: string | undefined }) {
           </>
         ) : (
           <div>
-            <p className="text-muted-foreground">No location</p>
+            <p className="text-muted-foreground">{t("noLocation")}</p>
           </div>
         )}
       </div>
@@ -97,7 +89,7 @@ function Location({ timezone }: { timezone: string | undefined }) {
         </Button>
         <Button onClick={() => setOpen(true)}>
           <MapPin className="size-4 ml-auto" />
-          <span>Location</span>
+          <span>{t("location")}</span>
         </Button>
       </div>
 
@@ -107,7 +99,7 @@ function Location({ timezone }: { timezone: string | undefined }) {
           onValueChange={setValue}
         />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>{t("noResultFound")}</CommandEmpty>
           {locations?.length ? (
             <CommandGroup heading="Locations">
               {locations.map((loc) => (
