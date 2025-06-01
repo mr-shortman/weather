@@ -15,7 +15,10 @@
     "noResultFound": "No results found.",
     "loading": "Loading...",
     "expandMore": "Expand more",
-    "expandLess": "Expand less"
+    "expandLess": "Expand less",
+    "detectLocation": "Detect Location",
+    "enterLocation": "Enter Location",
+    "selectLocationToStart": "Select a location to start"
   },
   "Chart": {
     "temp": "Temperature",
@@ -25,6 +28,19 @@
     "title": "Settings",
     "goBack": "Go Back",
     "language": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "themes": {
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    },
+
+    "pwa": {
+      "install": "Install App",
+      "appInstalled": "App Installed",
+      "appNotInstalled": "App Not Installed",
+      "browserNotSupported": "Your Browser is Not Supported",
+      "installPrompt": "This app can be installed on your home screen."
+    }
   }
 }

@@ -1,8 +1,7 @@
 import LocaleSwitcher from "@/app/_components/locale-switcher";
-import SelectWeatherProvider from "@/app/_components/select-weather-provider";
+import InstallButton from "@/components/install-button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { getWeatherIcon } from "@/lib/weather-service/weather-icons";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -30,12 +29,19 @@ export default function SettingsPage() {
         <h3 className="text-sm pl-2">{t("theme")}</h3>
         <ModeToggle />
       </div>
+      <div className="space-y-2">
+        <h3 className="text-sm pl-2">{t("pwa.install")}</h3>
+        <p className="pl-2 text-sm text-muted-foreground">
+          {t("pwa.installPrompt")}
+        </p>
+        <InstallButton />
+      </div>
       {/* <div className="space-y-2">
         <h3 className="text-sm pl-2">Provider</h3>
         <SelectWeatherProvider />
       </div> */}
       {/* <div className="p-2 rounded-md border"></div> */}
-      <div className="grid grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-4 gap-4">
         {Array.from({ length: 100 }).map((_, i) => {
           const Icon = getWeatherIcon(i, true);
           return (
@@ -47,7 +53,7 @@ export default function SettingsPage() {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </>
   );
 }

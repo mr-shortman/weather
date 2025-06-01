@@ -27,7 +27,9 @@ export default async function RootLayout({
     <html lang={locale} className={`${geist.variable}`}>
       <body>
         <TRPCReactProvider>
-          <NextIntlClientProvider>
+          <NextIntlClientProvider
+            timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
+          >
             <ThemeProvider
               attribute="class"
               defaultTheme="system"

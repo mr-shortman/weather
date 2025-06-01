@@ -1,6 +1,4 @@
 "use client";
-import { Combobox } from "@/components/combobox";
-import { useWeatherStore } from "@/lib/store/weather-store";
 import React from "react";
 import {
   Select,
@@ -14,6 +12,7 @@ import { setUserLocale } from "@/i18n/service";
 import { languages, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function LocaleSwitcher() {
   const [isPending, startTransition] = React.useTransition();
@@ -29,14 +28,14 @@ export default function LocaleSwitcher() {
 
   return (
     <Select value={locale} onValueChange={onChange}>
-      <SelectTrigger
-        className={cn("w-full", isPending && "pointer-events-none opacity-60")}
-      >
-        <SelectValue />
-      </SelectTrigger>
+      <Button asChild variant="outline" className="w-full justify-between ">
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+      </Button>
       <SelectContent>
         {languages.map((l) => (
-          <SelectItem key={l.value} value={l.value}>
+          <SelectItem key={l.value} value={l.value} className="">
             {l.flag}
             <span className="ml-1">{l.label}</span>
           </SelectItem>

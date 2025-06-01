@@ -15,7 +15,11 @@
     "loading": "Laden...",
 
     "expandMore": "Mehr Anzeigen",
-    "expandLess": "Weniger Anzeigen"
+    "expandLess": "Weniger Anzeigen",
+
+    "detectLocation": "Ort erkennen",
+    "enterLocation": "Ort eingeben",
+    "selectLocationToStart": "Wähle einen Ort aus, um zu beginnen"
   },
 
   "Chart": {
@@ -27,6 +31,19 @@
     "title": "Einstellungen",
     "goBack": "Zurück",
     "language": "Sprache",
-    "theme": "Aussehen"
+    "theme": "Aussehen",
+    "themes": {
+      "system": "System",
+      "light": "Hell",
+      "dark": "Dunkel"
+    },
+
+    "pwa": {
+      "install": "App installieren",
+      "appInstalled": "App Installiert",
+      "appNotInstalled": "App Nicht Installiert",
+      "browserNotSupported": "Ihr Browser wird nicht unterstützt",
+      "installPrompt": "Diese App kann auf Ihrer Startseite installiert werden."
+    }
   }
 }

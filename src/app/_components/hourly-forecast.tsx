@@ -1,18 +1,21 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { toFixedTemp } from "@/lib/weather-service/utils";
 import { getWeatherIcon } from "@/lib/weather-service/weather-icons";
 import { addDays, isAfter, isSameDay, isTomorrow } from "date-fns";
 import { CloudRain } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useFormatter, useNow, useTranslations } from "next-intl";
 import React from "react";
 
 function HourlyForecast({ data }: { data: Array<HourlyForecast> }) {
   const [expandMore, setExpandMore] = React.useState(false);
   const selectedDate = useWeatherStore((state) => state.selectedDate);
+  const now = useNow();
   const selectedHourlyForecast = React.useMemo(() => {
     if (!data || !selectedDate) return [];
-    const startOfThisHour = new Date();
+
+    const startOfThisHour = new Date(now.getTime());
     startOfThisHour.setMinutes(0, 0, 0);
     startOfThisHour.setHours(startOfThisHour.getHours() - 1);
 
@@ -26,6 +29,7 @@ function HourlyForecast({ data }: { data: Array<HourlyForecast> }) {
   }, [data, selectedDate, expandMore]);
 
   const t = useTranslations("Home");
+  const format = useFormatter();
   return (
     <div className="space-y-2">
       {selectedHourlyForecast?.map((h) => {
@@ -40,15 +44,18 @@ function HourlyForecast({ data }: { data: Array<HourlyForecast> }) {
               <div className="absolute -top-2.5 text-xs right-2 w-max px-2 py-px rounded-full border-2 h-max bg-background opacity-50">
                 {isTomorrow(new Date(h.time))
                   ? t("tomorrow")
-                  : Intl.DateTimeFormat("en-US", {
+                  : format.dateTime(new Date(h.time), {
                       weekday: "long",
-                    }).format(new Date(h.time))}
+                      timeZone:
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    })}
               </div>
             )}
 
             <p className="text-xl">
-              {new Date(h.time).toLocaleString(undefined, {
+              {format.dateTime(new Date(h.time), {
                 hour: "numeric",
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
               })}
             </p>
 
