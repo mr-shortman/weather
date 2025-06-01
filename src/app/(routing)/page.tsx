@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { toFixedTemp } from "@/lib/weather-service/utils";
 import React from "react";
 import { RotateCcw } from "lucide-react";
-import { isToday, isSameDay } from "date-fns";
+import { isToday } from "date-fns";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import Location from "@/app/_components/location";
 import { useQuery } from "@tanstack/react-query";
