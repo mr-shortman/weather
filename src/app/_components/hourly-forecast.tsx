@@ -14,7 +14,6 @@ function HourlyForecast({ data }: { data: Array<HourlyForecast> }) {
   const now = useNow();
   const selectedHourlyForecast = React.useMemo(() => {
     if (!data || !selectedDate) return [];
-
     const startOfThisHour = new Date(now.getTime());
     startOfThisHour.setMinutes(0, 0, 0);
     startOfThisHour.setHours(startOfThisHour.getHours() - 1);
@@ -30,6 +29,7 @@ function HourlyForecast({ data }: { data: Array<HourlyForecast> }) {
 
   const t = useTranslations("Home");
   const format = useFormatter();
+
   return (
     <div className="space-y-2">
       {selectedHourlyForecast?.map((h) => {

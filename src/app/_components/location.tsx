@@ -20,7 +20,8 @@ import { Icons } from "../../components/icons";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useGeolocated } from "react-geolocated";
-import { fetchLocation } from "@/server/actions/weather";
+import { fetchLocation } from "@/lib/weather-service/fetch-utils";
+import posthog from "posthog-js";
 
 function Location({ timezone }: { timezone: string | undefined }) {
   const prevLocations = useWeatherStore((state) => state.locations);
@@ -32,7 +33,7 @@ function Location({ timezone }: { timezone: string | undefined }) {
   const [value, setValue] = React.useState("");
 
   const debouncedValue = useDebouncedValue(value, 500);
-  const { data: locations } = api.weather.searchLocations.useQuery(
+  const { data: locations } = api.weather.searchLocation.useQuery(
     {
       location: debouncedValue,
     },
@@ -66,7 +67,12 @@ function Location({ timezone }: { timezone: string | undefined }) {
               coords.latitude,
               coords.longitude
             );
-            if (result) handleSelect(result);
+            if (result) {
+              handleSelect(result);
+              posthog.capture("autoFetchedLocationAdded", {
+                location: result,
+              });
+            }
           } catch (error) {
             console.error(error);
           }
@@ -132,7 +138,15 @@ function Location({ timezone }: { timezone: string | undefined }) {
             {locations?.length ? (
               <CommandGroup heading="Locations">
                 {locations.map((loc) => (
-                  <CommandItem key={loc.id} onSelect={() => handleSelect(loc)}>
+                  <CommandItem
+                    key={loc.id}
+                    onSelect={() => {
+                      handleSelect(loc);
+                      posthog.capture("fetchedLocationAdded", {
+                        loc,
+                      });
+                    }}
+                  >
                     {getUnicodeFlagIcon(loc.countryCode)}
                     <span>{loc.name}</span>
                     <span>{loc.countryCode}</span>
@@ -145,7 +159,9 @@ function Location({ timezone }: { timezone: string | undefined }) {
                 ? prevLocations.map((loc) => (
                     <CommandItem
                       key={loc.id}
-                      onSelect={() => handleSelect(loc)}
+                      onSelect={() => {
+                        handleSelect(loc);
+                      }}
                     >
                       {getUnicodeFlagIcon(loc.countryCode)}
                       <span>{loc.name}</span>

@@ -1,18 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp } from "lucide-react";
-import {
-  CartesianGrid,
-  Line,
-  XAxis,
-  LineChart,
-  RadarChart,
-  PolarAngleAxis,
-  PolarGrid,
-  Radar,
-  YAxis,
-} from "recharts";
+import { RadarChart, PolarAngleAxis, PolarGrid, Radar } from "recharts";
 import {
   Card,
   CardContent,

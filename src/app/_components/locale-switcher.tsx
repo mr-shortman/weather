@@ -10,7 +10,6 @@ import {
 import { useLocale } from "next-intl";
 import { setUserLocale } from "@/i18n/service";
 import { languages, type Locale } from "@/i18n/config";
-import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 

@@ -2,10 +2,8 @@ import "@/styles/globals.css";
 
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
-import { TRPCReactProvider } from "@/trpc/react";
 import { getLocale } from "next-intl/server";
-import { ThemeProvider } from "@/components/theme-provider";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Weather",
@@ -26,20 +24,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={`${geist.variable}`}>
       <body>
-        <TRPCReactProvider>
-          <NextIntlClientProvider
-            timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
-          >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
-          </NextIntlClientProvider>
-        </TRPCReactProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -15,17 +15,7 @@ function CurrentWeather({
   const {
     current: { temp, weatherCode, isDay },
   } = weather;
-  const sunrise = new Date(weather.sunrise).getTime(); // e.g. "2025-05-23T04:58:00"
-  const sunset = new Date(weather.sunset).getTime(); // e.g. "2025-05-23T20:15:00"
-  const now = Date.now();
-  let progress = 0;
-  if (now > sunrise && now < sunset) {
-    progress = ((now - sunrise) / (sunset - sunrise)) * 100;
-  } else if (now >= sunset) {
-    progress = 100;
-  } else {
-    progress = 0;
-  }
+
   const CurrentWeatherIcon = getWeatherIcon(weatherCode, isDay);
   const t = useTranslations("Home");
 
