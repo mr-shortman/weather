@@ -1,15 +1,11 @@
 import { auth } from "@/server/auth";
 import Link from "next/link";
 import React from "react";
-import Avatar from "./avatar";
-import { db } from "@/server/db";
-import { api } from "@/trpc/server";
-import { Button } from "./ui/button";
+import Avatar from "../../components/avatar";
+import { Button } from "../../components/ui/button";
 import SelectWeatherProvider from "./select-weather-provider";
 import { SettingsIcon } from "lucide-react";
-async function foo() {
-  return "bar";
-}
+
 export default async function Navbar() {
   const session = await auth();
 

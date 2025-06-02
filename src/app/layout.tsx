@@ -2,13 +2,13 @@ import "@/styles/globals.css";
 
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-
-import { TRPCReactProvider } from "@/trpc/react";
+import { getLocale } from "next-intl/server";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Weather",
   description: "Simple Weather App",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/icons/favicon.ico" }],
 };
 
 const geist = Geist({
@@ -16,13 +16,15 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className={`${geist.variable}`}>
+    <html lang={locale} className={`${geist.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -1,18 +1,7 @@
 "use client";
 
 import React from "react";
-import { TrendingUp } from "lucide-react";
-import {
-  CartesianGrid,
-  Line,
-  XAxis,
-  LineChart,
-  RadarChart,
-  PolarAngleAxis,
-  PolarGrid,
-  Radar,
-  YAxis,
-} from "recharts";
+import { RadarChart, PolarAngleAxis, PolarGrid, Radar } from "recharts";
 import {
   Card,
   CardContent,
@@ -30,6 +19,11 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { toFixedTemp } from "@/lib/weather-service/utils";
+import { useFormatter, useTranslations } from "next-intl";
+import { useWeatherStore } from "@/lib/store/weather-store";
+import { isSameDay } from "date-fns";
+import { ChartBarHorizontal } from "./bar-chart";
+import { ChartLineMultiple } from "./line-chart";
 
 export function TempRainChart({
   data,
@@ -40,10 +34,12 @@ export function TempRainChart({
     temp: number;
   }>;
 }) {
+  const t = useTranslations("Chart");
+
   return (
     <Card className="border-0 shadow-none">
       <CardHeader className="items-center pb-4">
-        <CardTitle>Temperature / Rain</CardTitle>
+        <CardTitle>{`${t("temp")} / ${t("rain")}`}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -125,82 +121,38 @@ export function TempRainChart({
   );
 }
 
-const TemperatureChart = ({
-  data,
-}: {
-  data: Array<{
-    label: string;
-    value: number;
-  }>;
-}) => {
-  return (
-    <Card className="border-0 shadow-none">
-      <CardHeader>
-        <CardTitle>Temperature</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={{
-            value: { color: "var(--color-primary)", label: "Temp" },
-          }}
-          className="mx-auto aspect-square"
-        >
-          <LineChart accessibilityLayer data={data}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="label"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.replace(0, 3)}
-            />
-            <YAxis
-              dataKey="value"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              width={36}
-              tickFormatter={(value) => toFixedTemp(value)}
-              // tickFormatter={(value) => value.replace(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  hideLabel
-                  formatter={(val) => (
-                    <div className="flex justify-between items-center w-full">
-                      <span>Temp</span>
-                      <span>{toFixedTemp(Number(val))}</span>
-                    </div>
-                  )}
-                />
-              }
-            />
-            <Line
-              dataKey="value"
-              type="linear"
-              stroke="var(--color-primary)"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-  );
-};
-
 export default function WeatherCharts({
-  selectedHourly,
   hourly,
 }: {
   hourly: Array<HourlyForecast>;
-  selectedHourly: Array<HourlyForecast>;
 }) {
+  const selectedDate = useWeatherStore((state) => state.selectedDate);
+  const selectedHourly = React.useMemo(() => {
+    if (!hourly || !selectedDate) return [];
+
+    return hourly.filter((h) =>
+      isSameDay(new Date(h.time), new Date(selectedDate))
+    );
+  }, [hourly, selectedDate]);
+  const format = useFormatter();
   return (
     <div>
-      <TempRainChart
+      <ChartLineMultiple
+        data={selectedHourly.map(({ rainProbability, temperature, time }) => ({
+          time: format.dateTime(new Date(time), {
+            hour: "numeric",
+            hour12: false,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          }),
+          temp: temperature,
+          rain: rainProbability,
+        }))}
+      />
+
+      <p className="mt-12 mx-auto text-muted-foreground text-xs text-center ">
+        More Charts soon
+      </p>
+      {/* <TempRainChart
         data={selectedHourly.map(({ temperature, time, rainProbability }) => ({
           time: Intl.DateTimeFormat(undefined, {
             hour: "numeric",
@@ -211,17 +163,16 @@ export default function WeatherCharts({
           temp: temperature,
           rain: rainProbability,
         }))}
-      />
-      <TemperatureChart
+      /> */}
+      {/* <TemperatureChart
         data={selectedHourly.map(({ temperature, time }) => ({
-          label: Intl.DateTimeFormat(undefined, {
+          label: new Date(time).toLocaleString("en-US", {
             hour: "numeric",
-          })
-            .format(new Date(time))
-            .replace("/[A-Za-z]/g", ""),
+            hour12: false,
+          }),
           value: temperature,
         }))}
-      />
+      /> */}
     </div>
   );
 }

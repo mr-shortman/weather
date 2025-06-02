@@ -1,0 +1,49 @@
+{
+  "Home": {
+    "location": "Ort",
+    "today": "Heute",
+    "hourly": "Stündlich",
+    "details": "Details",
+    "day": "Tag",
+    "night": "Nacht",
+    "tomorrow": "Morgen",
+
+    "weatherNow": "Wetter jetzt",
+    "noLocation": "Kein Ort",
+    "noData": "Keine Daten",
+    "noResultFound": "Keine Ergebnisse gefunden.",
+    "loading": "Laden...",
+
+    "expandMore": "Mehr Anzeigen",
+    "expandLess": "Weniger Anzeigen",
+
+    "detectLocation": "Ort erkennen",
+    "enterLocation": "Ort eingeben",
+    "selectLocationToStart": "Wähle einen Ort aus, um zu beginnen"
+  },
+
+  "Chart": {
+    "temp": "Temperatur",
+    "rain": "Regen"
+  },
+
+  "Settings": {
+    "title": "Einstellungen",
+    "goBack": "Zurück",
+    "language": "Sprache",
+    "theme": "Aussehen",
+    "themes": {
+      "system": "System",
+      "light": "Hell",
+      "dark": "Dunkel"
+    },
+
+    "pwa": {
+      "install": "App installieren",
+      "appInstalled": "App Installiert",
+      "appNotInstalled": "App Nicht Installiert",
+      "browserNotSupported": "Ihr Browser wird nicht unterstützt",
+      "installPrompt": "Diese App kann auf Ihrer Startseite installiert werden."
+    }
+  }
+}
