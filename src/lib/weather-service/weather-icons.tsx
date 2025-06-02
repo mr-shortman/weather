@@ -23,7 +23,6 @@ import {
 
 import { type ComponentType } from "react";
 import { cn } from "../utils";
-import { Settings } from "lucide-react";
 import { weatherIcons } from "@/components/icons";
 
 const withCn = <P extends object>(
