@@ -1,29 +1,65 @@
-# Create T3 App
+# 🌤️ Weather App
+ 
+## 🚀 Features
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+- **Current Weather** – Fetches current weather information for any location.
+- **Hourly and Daily Forecasts** – Provides hourly and daily forecasts for the selected location.
+- **Charts** – Displays charts for the selected location.
+- **User-Friendly Interface** – Clean and intuitive design for seamless user experience. 
+- **Multiple Languages** – Supports multiple languages for weather information. 
+- **PWA Support** – Offers a Progressive Web App (PWA) for mobile devices.
 
-## What's next? How do I make an app with this?
+## 🛠️ Tech Stack
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **Framework**: Next.js
+- **Styling**: Tailwind CSS
+- **Backend**: tRPC
+- **Database**: Drizzle ORM
+- **Authentication**: NextAuth.js
+- **Type Safety**: TypeScript
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## 📦 Installation
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+1. **Clone the Repository**:
 
-## Learn More
+   ```bash
+   git clone https://github.com/mr-shortman/weather.git
+   cd weather
+   ```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+2. **Install Dependencies**:
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+   ```bash
+   pnpm install
+   ```
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+4. **Run the Development Server**:
 
-## How do I deploy this?
+   ```bash
+   pnpm dev
+   ```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+   The application will be available at `http://localhost:3000`.
+
+## 📍 Roadmap
+
+- [ ] Add weekly forecasts  
+- [ ] Add animated weather icons
+- [ ] Unit toggle (°C / °F) 
+- [ ] Offline mode with cached data 
+- [ ] Multiple Weather Providers
+
+ 
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## 🤝 Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+
+## 📫 Contact
+
+For any inquiries or feedback, feel free to reach out:
+
+- **Discord**: [Join our community](https://discord.gg/njGmuBQrfg)
