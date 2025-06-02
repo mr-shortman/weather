@@ -1,7 +1,5 @@
 # 🌤️ Weather App
-
-A sleek and responsive weather application built with the T3 Stack, providing real-time weather updates for any location worldwide.
-
+ 
 ## 🚀 Features
 
 - **Current Weather** – Fetches current weather information for any location.
