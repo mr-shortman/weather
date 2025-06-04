@@ -1,3 +1,4 @@
+"use client";
 import {
   WiDaySunny,
   WiDayCloudy,
@@ -23,18 +24,9 @@ import {
 
 import { type ComponentType } from "react";
 import { cn } from "../utils";
-import { weatherIcons } from "@/components/icons";
+import { Icons, weatherIcons } from "@/components/icons";
+import { Settings } from "lucide-react";
 
-const withCn = <P extends object>(
-  Component: React.ComponentType<P>,
-  defaultClassName?: string
-) => {
-  return (props: P & { className?: string }) => {
-    return (
-      <Component {...props} className={cn(defaultClassName, props.className)} />
-    );
-  };
-};
 export function getWeatherIcon(
   code: number,
   isDaytime: boolean
@@ -43,9 +35,7 @@ export function getWeatherIcon(
 
   switch (code) {
     case 0:
-      return day
-        ? withCn(weatherIcons.clearDay, "text-yellow-400")
-        : WiNightClear;
+      return day ? weatherIcons.clearDay : weatherIcons.clearNight;
     case 1:
     case 2:
       return day ? weatherIcons.dayCloudy : WiNightAltCloudy;
@@ -58,18 +48,18 @@ export function getWeatherIcon(
     case 51:
     case 53:
     case 55:
-      return day ? WiSprinkle : WiNightAltSprinkle;
+      return day ? weatherIcons.sprinkle : WiNightAltSprinkle;
     case 56:
     case 57:
-      return WiRainMix;
+      return weatherIcons.rainMix;
 
     case 61:
     case 63:
     case 65:
-      return day ? WiRain : WiNightAltRain;
+      return day ? weatherIcons.rain : WiNightAltRain;
     case 66:
     case 67:
-      return WiRainWind;
+      return weatherIcons.rainwind;
 
     case 71:
     case 73:
@@ -81,7 +71,7 @@ export function getWeatherIcon(
     case 80:
     case 81:
     case 82:
-      return WiShowers;
+      return weatherIcons.showers;
 
     case 85:
     case 86:
@@ -90,10 +80,27 @@ export function getWeatherIcon(
     case 95:
     case 96:
     case 99:
-      return WiThunderstorm;
+      return weatherIcons.thunderstorm;
 
     default:
       return WiSnow;
     // return WiNa;
   }
 }
+
+export const getAllUniqueWeatherIcons = () => {
+  const uniqueIcons = new Set<ComponentType<any>>();
+
+  // Add all codes you handle in getWeatherIcon
+  const codes = [
+    0, 1, 2, 3, 45, 48, 51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77,
+    80, 81, 82, 85, 86, 95, 96, 99,
+  ];
+
+  for (const code of codes) {
+    const icon = getWeatherIcon(code, false); // Or false to test night variants too
+    uniqueIcons.add(icon); // Set ensures uniqueness
+  }
+
+  return Array.from(uniqueIcons.values());
+};
