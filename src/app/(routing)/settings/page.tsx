@@ -48,7 +48,7 @@ export default function SettingsPage() {
         <SelectWeatherProvider />
       </div> */}
       {/* <div className="p-2 rounded-md border"></div> */}
-      <div className="grid grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-4 gap-4">
         {weatherIcons.map((Icon, i) => {
           return (
             <div
@@ -59,7 +59,7 @@ export default function SettingsPage() {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </>
   );
 }

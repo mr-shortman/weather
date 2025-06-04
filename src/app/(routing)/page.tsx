@@ -16,7 +16,6 @@ import WeatherCharts from "@/app/_components/charts";
 import CurrentWeather from "../_components/current-weather";
 import { useFormatter, useTranslations } from "next-intl";
 import HourlyForecast from "../_components/hourly-forecast";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
@@ -35,15 +34,18 @@ export default function Home() {
       await weatherProviders[provider].query(lat, lon, language),
     enabled: !!lat && !!lon,
   });
-  // {
-  //     }
-
-  // weatherProviders[provider].query(lat, lon, language);
 
   React.useEffect(() => {
-    if (!selectedDate && data?.daily?.length) {
-      setSelectedDate(data.daily[0]?.date);
-    }
+    const handleSelectedDate = () => {
+      if (!selectedDate && data?.daily?.length) {
+        setSelectedDate(data.daily[0]?.date);
+      }
+      handleSelectedDate();
+      window.addEventListener("focus", handleSelectedDate);
+      return () => {
+        window.removeEventListener("focus", handleSelectedDate);
+      };
+    };
   }, [data, selectedDate]);
 
   const t = useTranslations("Home");
@@ -158,7 +160,6 @@ export default function Home() {
                           </span>
                         </div>
                       </div>
-                      <Separator />
                     </div>
                   </div>
                 </div>
