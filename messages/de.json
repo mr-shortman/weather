@@ -42,7 +42,7 @@
       "install": "App installieren",
       "appInstalled": "App Installiert",
       "appNotInstalled": "App Nicht Installiert",
-      "browserNotSupported": "Ihr Browser wird nicht unterstützt",
+      "browserNotSupported": "Dein Browser wird nicht unterstützt",
       "installPrompt": "Diese App kann auf Ihrer Startseite installiert werden."
     }
   }

@@ -16,6 +16,19 @@ export default function DailyForecase({
   const t = useTranslations("Home");
   const format = useFormatter();
 
+  React.useEffect(() => {
+    const handleSelectedDate = () => {
+      if (!selectedDate && data?.length) {
+        setSelectedDate(data[0]?.date);
+      }
+    };
+    handleSelectedDate();
+    window.addEventListener("focus", handleSelectedDate);
+    return () => {
+      window.removeEventListener("focus", handleSelectedDate);
+    };
+  }, [data, selectedDate]);
+
   return (
     <div className="flex flex-nowrap overflow-x-auto w-full gap-2 lg:gap-4 pb-2 ">
       {data.map(({ date, maxTemp, weatherCode }, i) => {

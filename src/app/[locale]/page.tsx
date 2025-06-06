@@ -36,19 +36,6 @@ export default function Home() {
     enabled: !!lat && !!lon,
   });
 
-  React.useEffect(() => {
-    const handleSelectedDate = () => {
-      if (!selectedDate && data?.daily?.length) {
-        setSelectedDate(data.daily[0]?.date);
-      }
-      handleSelectedDate();
-      window.addEventListener("focus", handleSelectedDate);
-      return () => {
-        window.removeEventListener("focus", handleSelectedDate);
-      };
-    };
-  }, [data, selectedDate]);
-
   const t = useTranslations("Home");
   const format = useFormatter();
 
