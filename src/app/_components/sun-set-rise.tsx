@@ -1,4 +1,4 @@
-import { Sunrise, Sunset } from "lucide-react";
+import { MoonStar, SunDim, Sunrise, Sunset } from "lucide-react";
 
 import React from "react";
 import { fromZonedTime } from "date-fns-tz";
@@ -72,23 +72,25 @@ export default function SunSetRise({
       <div className={cn("flex items-center gap-2 w-full", flexDirection)}>
         <Sunrise className="size-6" />
         <div className="relative w-full h-2 bg-muted rounded-full ">
-          <div
-            className="w-full h-2 origin-left absolute rounded-full bg-primary left-0"
-            style={{
-              transform: `scaleX(${progress * 100}%)`,
-            }}
-          />
+          <div className="relative w-full h-2 bg-muted rounded-full overflow-hidden">
+            <div
+              className="w-full h-2 origin-left absolute rounded-full bg-primary left-0"
+              style={{
+                transform: `scaleX(${progress * 100}%)`,
+              }}
+            />
+          </div>
 
           <div
-            className="absolute   flex items-center justify-center rounded-full origin-left left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 transform"
+            className="absolute bg-background rounded-full p-1 flex items-center justify-center   left-1/2 -translate-x-1/2  top-1/2 -translate-y-1/2 transform"
             style={{
               left: `${progress * 100}%`,
             }}
           >
             {phase === "day" ? (
-              <weatherIcons.clearDay className="size-7" />
+              <SunDim className="size-4 text-yellow-500" />
             ) : (
-              <weatherIcons.clearNight className="size-7" />
+              <MoonStar className="size-4 text-yellow-500" />
             )}
           </div>
         </div>

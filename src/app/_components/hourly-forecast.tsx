@@ -69,6 +69,7 @@ function HourlyForecast({
                 {format.dateTime(new Date(event.sunrise ? sunrise : sunset), {
                   hour: "2-digit",
                   minute: "2-digit",
+                  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 })}{" "}
                 {event.sunset ? (
                   <>
