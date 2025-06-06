@@ -8,19 +8,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLocale } from "next-intl";
-import { setUserLocale } from "@/i18n/service";
 import { languages, type Locale } from "@/i18n/config";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 export default function LocaleSwitcher() {
-  const [isPending, startTransition] = React.useTransition();
   const router = useRouter();
   const locale = useLocale();
   function onChange(value: string) {
     const locale = value as Locale;
-    startTransition(() => {
-      setUserLocale(locale);
+
+    fetch("/api/set-locale", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ locale }),
+    }).then(() => {
       router.refresh();
     });
   }

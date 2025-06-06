@@ -17,6 +17,7 @@ import CurrentWeather from "../_components/current-weather";
 import { useFormatter, useTranslations } from "next-intl";
 import HourlyForecast from "../_components/hourly-forecast";
 import { Skeleton } from "@/components/ui/skeleton";
+import DailyForecase from "../_components/daily-forecase";
 
 export default function Home() {
   const {
@@ -119,53 +120,7 @@ export default function Home() {
             </div>
           )}
         </div>
-        <div className="flex flex-nowrap overflow-x-auto w-full gap-2 lg:gap-4 pb-2 ">
-          {data &&
-            data.daily.map(({ date, minTemp, maxTemp, weatherCode }, i) => {
-              const Icon = getWeatherIcon(weatherCode, true);
-              return (
-                <div
-                  key={date}
-                  className={cn(
-                    "rounded-xl border-2 w-32 cursor-pointer ",
-                    selectedDate === date && "border-primary/50"
-                  )}
-                  onClick={() => setSelectedDate(date)}
-                >
-                  <div className="flex items-center">
-                    <div>
-                      <div className="flex flex-col px-2 py-1">
-                        <p className=" h-max justify-between  font-semibold text-lg flex items-center">
-                          {isToday(date)
-                            ? t("today")
-                            : format.dateTime(new Date(date), {
-                                timeZone:
-                                  Intl.DateTimeFormat().resolvedOptions()
-                                    .timeZone,
-
-                                weekday: "short",
-                              })}
-                          <Icon className="size-8" />
-                        </p>
-                        <div className="flex items-center justify-between w-full">
-                          <span className="text-xs text-muted-foreground ">
-                            {format.dateTime(new Date(date), {
-                              timeZone:
-                                Intl.DateTimeFormat().resolvedOptions()
-                                  .timeZone,
-
-                              day: "2-digit",
-                              month: "2-digit",
-                            })}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-        </div>
+        {data?.daily && <DailyForecase data={data.daily} />}
       </div>
       {selectedLocation?.id ? (
         <Tabs defaultValue="hourly" className="w-full mt-4">

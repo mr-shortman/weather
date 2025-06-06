@@ -149,9 +149,6 @@ export default function WeatherCharts({
         }))}
       />
 
-      <p className="mt-12 mx-auto text-muted-foreground text-xs text-center ">
-        More Charts soon
-      </p>
       {/* <TempRainChart
         data={selectedHourly.map(({ temperature, time, rainProbability }) => ({
           time: Intl.DateTimeFormat(undefined, {
