@@ -2,8 +2,8 @@ import "@/styles/globals.css";
 
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { getLocale } from "next-intl/server";
 import Providers from "./providers";
+import { getLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Weather",
@@ -18,9 +18,10 @@ const geist = Geist({
 
 export default async function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const locale = await getLocale();
-
   return (
     <html lang={locale} className={`${geist.variable}`}>
       <body>

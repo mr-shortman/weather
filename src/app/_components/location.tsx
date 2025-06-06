@@ -21,7 +21,6 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useGeolocated } from "react-geolocated";
 import { fetchLocation } from "@/lib/weather-service/fetch-utils";
-import posthog from "posthog-js";
 
 function Location({ timezone }: { timezone: string | undefined }) {
   const prevLocations = useWeatherStore((state) => state.locations);
@@ -69,9 +68,6 @@ function Location({ timezone }: { timezone: string | undefined }) {
             );
             if (result) {
               handleSelect(result);
-              posthog.capture("autoFetchedLocationAdded", {
-                location: result,
-              });
             }
           } catch (error) {
             console.error(error);
@@ -142,9 +138,6 @@ function Location({ timezone }: { timezone: string | undefined }) {
                     key={loc.id}
                     onSelect={() => {
                       handleSelect(loc);
-                      posthog.capture("fetchedLocationAdded", {
-                        loc,
-                      });
                     }}
                   >
                     {getUnicodeFlagIcon(loc.countryCode)}

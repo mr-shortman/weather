@@ -3,10 +3,11 @@ import LocaleSwitcher from "@/components/locale-switcher";
 import InstallButton from "@/components/install-button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Circle, Spline } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import React from "react";
+import { Icons } from "@/components/icons";
 
 export default function SettingsPage() {
   const t = useTranslations("Settings");
