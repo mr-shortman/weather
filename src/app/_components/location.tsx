@@ -21,6 +21,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useGeolocated } from "react-geolocated";
 import { fetchLocation } from "@/lib/weather-service/fetch-utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function Location({ timezone }: { timezone: string | undefined }) {
   const prevLocations = useWeatherStore((state) => state.locations);
@@ -32,14 +33,15 @@ function Location({ timezone }: { timezone: string | undefined }) {
   const [value, setValue] = React.useState("");
 
   const debouncedValue = useDebouncedValue(value, 500);
-  const { data: locations } = api.weather.searchLocation.useQuery(
-    {
-      location: debouncedValue,
-    },
-    {
-      enabled: !!debouncedValue,
-    }
-  );
+  const { data: locations, isLoading: isFetching } =
+    api.weather.searchLocation.useQuery(
+      {
+        location: debouncedValue,
+      },
+      {
+        enabled: !!debouncedValue,
+      }
+    );
   const [open, setOpen] = React.useState(false);
   const handleSelect = (loc: WeatherLocation) => {
     setSelectedLocation(loc);
@@ -130,7 +132,11 @@ function Location({ timezone }: { timezone: string | undefined }) {
             onValueChange={setValue}
           />
           <CommandList>
-            <CommandEmpty>{t("noResultFound")}</CommandEmpty>
+            {isFetching ? (
+              <Skeleton className="h-4 w-full" />
+            ) : (
+              <CommandEmpty>{t("noResultFound")}</CommandEmpty>
+            )}
             {locations?.length ? (
               <CommandGroup heading="Locations">
                 {locations.map((loc) => (

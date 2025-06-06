@@ -18,6 +18,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import HourlyForecast from "../_components/hourly-forecast";
 import { Skeleton } from "@/components/ui/skeleton";
 import DailyForecase from "../_components/daily-forecase";
+import SunSetRise from "../_components/sun-set-rise";
 
 export default function Home() {
   const {
@@ -81,11 +82,12 @@ export default function Home() {
             current: data.current,
             sunrise: data.daily[0]?.sunrise!,
             sunset: data.daily[0]?.sunset!,
+            timezone: data.timezone,
           }}
         />
       )}
 
-      <div className="sticky z-50 top-18  py-2 bg-background space-y-2 mt-4  ">
+      <div className="sticky z-50 top-18  py-2 bg-background space-y-2  ">
         <div className="flex items-center px-2 ">
           {selectedDate && (
             <div className="flex justify-between w-full items-center gap-2 ">
@@ -127,10 +129,15 @@ export default function Home() {
           </TabsList>
           <TabsContent value="hourly">
             {data?.hourly?.length ? (
-              <HourlyForecast data={data?.hourly!} />
+              <HourlyForecast
+                sunset={selectedDay?.sunset!}
+                sunrise={selectedDay?.sunrise!}
+                timezone={data?.timezone}
+                hourly={data?.hourly!}
+              />
             ) : null}
           </TabsContent>
-          <TabsContent value="details">
+          <TabsContent value="details" className="space-y-12 py-12">
             <WeatherCharts hourly={data?.hourly!} />
           </TabsContent>
         </Tabs>

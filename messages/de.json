@@ -9,6 +9,8 @@
     "tomorrow": "Morgen",
 
     "weatherNow": "Wetter jetzt",
+    "sunset": "Sonnenuntergang",
+    "sunrise": "Sonnenaufgang",
     "noLocation": "Kein Ort",
     "noData": "Keine Daten",
     "noResultFound": "Keine Ergebnisse gefunden.",

@@ -56,7 +56,7 @@ export function getWeatherIcon(
     case 61:
     case 63:
     case 65:
-      return day ? weatherIcons.rain : WiNightAltRain;
+      return day ? weatherIcons.rain : weatherIcons.rainNight;
     case 66:
     case 67:
       return weatherIcons.rainwind;

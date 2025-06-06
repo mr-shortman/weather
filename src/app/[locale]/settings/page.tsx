@@ -8,7 +8,8 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import React from "react";
 import { Icons } from "@/components/icons";
-
+import { getAllUniqueWeatherIcons } from "@/lib/weather-service/weather-icons";
+const weatherIcons = getAllUniqueWeatherIcons();
 export default function SettingsPage() {
   const t = useTranslations("Settings");
 
@@ -39,12 +40,13 @@ export default function SettingsPage() {
         </p>
         <InstallButton />
       </div>
+
       {/* <div className="space-y-2">
         <h3 className="text-sm pl-2">Provider</h3>
         <SelectWeatherProvider />
       </div> */}
       {/* <div className="p-2 rounded-md border"></div> */}
-      {/* <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {weatherIcons.map((Icon, i) => {
           return (
             <div
@@ -55,7 +57,7 @@ export default function SettingsPage() {
             </div>
           );
         })}
-      </div> */}
+      </div>
     </>
   );
 }
